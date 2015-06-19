@@ -49,11 +49,4 @@ public class BibliotecaAppTest {
 
         verify(menu).displayMenu();
     }
-
-    @Test
-    public void shouldQuit(){
-        bibliotecaApp.start();
-
-        assertTrue(bibliotecaApp.quit());
-    }
 }

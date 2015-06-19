@@ -29,19 +29,14 @@ public class Biblioteca {
         printStream.println("");
     }
 
-
-    public boolean checkout(Book book) {
-        if(book.isCheckedOut()){
-            return false;
-        }
-        book.checkOut();
-        return true;
-    }
-
-    public boolean checkout(String bookTitle){
-        for(Book book: books){
-            if(book.title().equalsIgnoreCase(bookTitle)){
-                return checkout(book);
+    public boolean checkout(String bookTitle) {
+        for (Book book : books) {
+            if (book.title().equalsIgnoreCase(bookTitle)) {
+                if (book.isCheckedOut()) {
+                    return false;
+                }
+                book.checkOut();
+                return true;
             }
         }
         return false;
@@ -67,5 +62,18 @@ public class Biblioteca {
             }
         }
         printStream.println("");
+    }
+
+    public boolean checkoutMovie(String movieTitle) {
+        for(Movie movie: movies){
+            if(movie.title().equalsIgnoreCase(movieTitle)){
+                if(movie.isCheckedOut()){
+                    return false;
+                }
+                movie.checkOut();
+                return true;
+            }
+        }
+        return false;
     }
 }

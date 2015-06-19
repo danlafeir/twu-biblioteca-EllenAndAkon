@@ -18,9 +18,6 @@ public class LibraryItem {
         checkedOut = false;
     }
 
-    public LibraryItem() {
-    }
-
     public String title() {
         return this.title;
     }

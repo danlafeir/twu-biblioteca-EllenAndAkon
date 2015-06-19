@@ -21,17 +21,18 @@ public class MenuTest {
     private BufferedReader reader;
     private PrintStream printStream;
     private Biblioteca biblioteca;
-    private List<LibraryItem> items;
     private Menu menu;
     private BibliotecaApp bibliotecaApp;
     private String itemTitle;
+    private User user;
 
     @Before
     public void setUp() throws IOException{
         reader = mock(BufferedReader.class);
         printStream = mock(PrintStream.class);
         biblioteca = mock(Biblioteca.class);
-        menu = new Menu(printStream, biblioteca, reader);
+        user = mock(User.class);
+        menu = new Menu(printStream, biblioteca, reader, user);
         when(reader.readLine()).thenReturn("list items");
         bibliotecaApp = mock(BibliotecaApp.class);
         itemTitle = "Akon's Thesis";
@@ -62,6 +63,12 @@ public class MenuTest {
     }
 
     @Test
+    public void shouldIncludeCheckoutMoviesInMenuOption(){
+        menu.displayMenu();
+        verify(printStream).println(contains("Checkout Movie"));
+    }
+
+    @Test
     public void shouldIncludeReturnBookInMenuOption(){
         menu.displayMenu();
         verify(printStream).println(contains("Return"));
@@ -69,47 +76,63 @@ public class MenuTest {
 
     @Test
     public void shouldReturnBookWithGivenTitle(){
-        menu.selectOption("return " + itemTitle);
+        menu.selectOption("return book" + itemTitle);
         verify(biblioteca).returnBook(itemTitle.toLowerCase());
     }
 
     @Test
     public void shouldCheckoutBookWithGivenTitle(){
-        menu.selectOption("checKout " + itemTitle);
+        when(user.isLoggedIn()).thenReturn(true);
+        menu.selectOption("checKout book" + itemTitle);
         verify(biblioteca).checkout(itemTitle.toLowerCase());
+    }
+
+    @Test
+    public void shouldCheckoutMovieWithGivenTitle(){
+        menu.selectOption("checKout Movie " + itemTitle);
+        verify(biblioteca).checkoutMovie(itemTitle.toLowerCase());
     }
 
     @Test
     public void shouldLetUserKnowWhenCheckoutFails(){
         when(biblioteca.checkout(itemTitle)).thenReturn(false);
-        menu.selectOption("checKout " + itemTitle);
+        when(user.isLoggedIn()).thenReturn(true);
+        menu.selectOption("checKout book" + itemTitle);
         verify(printStream).println("Could not check out book with that title.");
     }
 
     @Test
     public void shouldLetUserKnowWhenCheckoutIsSuccessful(){
         when(biblioteca.checkout(itemTitle.toLowerCase())).thenReturn(true);
-        menu.selectOption("checKout " + itemTitle);
+        when(user.isLoggedIn()).thenReturn(true);
+        menu.selectOption("checKout book " + itemTitle);
         verify(printStream).println(contains("Success"));
     }
 
     @Test
-    public void shouldQuitApplicationWhenQuitIsSelected(){
-        menu.selectOption("Quit");
-        assertFalse(menu.isStillAlive());
-    }
-
-    @Test
-    public void shouldLetUserKnowReturnisSuccessful(){
+    public void shouldLetUserKnowBookReturnIsSuccessful(){
         when(biblioteca.returnBook(itemTitle.toLowerCase())).thenReturn(true);
-        menu.selectOption("return " + itemTitle);
+        menu.selectOption("return book " + itemTitle);
         verify(printStream).println(contains("success"));
     }
 
     @Test
-    public void shouldLetUserKnowReturnisUnsuccessful(){
+    public void shouldLetUserKnowBookReturnisUnsuccessful(){
         when(biblioteca.returnBook(itemTitle.toLowerCase())).thenReturn(false);
-        menu.selectOption("return " + itemTitle);
+        menu.selectOption("return book " + itemTitle);
         verify(printStream).println(contains("not return"));
+    }
+
+    @Test
+    public void shouldCheckIfYouAreLoggedInWhenCheckingOutBooks(){
+        menu.selectOption("checkout book Akon's thesis");
+        verify(user).isLoggedIn();
+    }
+
+    @Test
+    public void shouldPrintMessageWhenUserIsNotLoggedIn(){
+        when(user.isLoggedIn()).thenReturn(false);
+        menu.selectOption("checkout book Akon's thesis");
+        verify(printStream).println("You need to be logged in to perform this option");
     }
 }

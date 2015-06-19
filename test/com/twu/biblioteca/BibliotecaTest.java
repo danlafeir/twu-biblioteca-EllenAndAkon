@@ -40,7 +40,6 @@ public class BibliotecaTest {
 
     }
 
-
     @Test
     public void shouldPrintNothingWhenThereAreNoBooks() {
         biblioteca.listBooks();
@@ -80,7 +79,7 @@ public class BibliotecaTest {
         Book book5 = new Book("Conversations on String Theory", "Raymond", "1991");
         books.add(book4);
         books.add(book5);
-        biblioteca.checkout(book4);
+        biblioteca.checkout(book4.title());
         biblioteca.listBooks();
 
         verify(printStream, never()).format(anyString(), eq("Akon's thesis"), eq("Akon"), eq("4000"));
@@ -91,14 +90,14 @@ public class BibliotecaTest {
         Book book4 = new Book("Akon's thesis", "Akon", "4000");
         books.add(book4);
         book4.checkOut();
-        assertFalse(biblioteca.checkout(book4));
+        assertFalse(biblioteca.checkout(book4.title()));
     }
 
     @Test
     public void shouldReturnTrueIfBookIsNotAlreadyCheckedOut() {
         Book book4 = new Book("Akon's thesis", "Akon", "4000");
         books.add(book4);
-        assertTrue(biblioteca.checkout(book4));
+        assertTrue(biblioteca.checkout(book4.title()));
     }
 
     @Test
@@ -107,6 +106,18 @@ public class BibliotecaTest {
         when(book2.checkIn()).thenReturn(false);
         assertEquals(biblioteca.returnBook(book1), true);
         assertFalse(biblioteca.returnBook(book2));
+    }
+
+    @Test
+    public void shouldNotIncludeCheckedOutMoviesInList() {
+        Movie movie1 = new Movie("Akon's biography", "Akon", "4000", "100");
+        Movie movie2 = new Movie("Eugene's epic film", "Eugene himself", "1991", "999");
+        movies.add(movie1);
+        movies.add(movie2);
+        biblioteca.checkoutMovie(movie1.title());
+        biblioteca.listMovies();
+
+        verify(printStream, never()).format(anyString(), eq("Akon's biography"), eq("Akon"), eq("4000"), eq("100"));
     }
 
 }

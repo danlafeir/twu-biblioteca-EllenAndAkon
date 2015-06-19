@@ -28,9 +28,10 @@ public class BibliotecaApp {
         movies.add(new Movie("Harry Potter", "JK Rowling", "2000", "86"));
         movies.add(new Movie("Twilight", "Stephanie Myers", "2000", "5"));
         movies.add(new Movie("Seventh Son", "Richard Wright", "2000", "76"));
+        User user = new User();
         Biblioteca biblioteca = new Biblioteca(printStream, books, movies);
 
-        Menu menu = new Menu(System.out, biblioteca, reader);
+        Menu menu = new Menu(System.out, biblioteca, reader, user);
         BibliotecaApp bibliotecaApp = new BibliotecaApp(printStream, menu);
 
         bibliotecaApp.start();
@@ -42,11 +43,7 @@ public class BibliotecaApp {
             menu.displayMenu();
             menu.selectOption(menu.getUserInput());
         }
-        quit();
 
     }
 
-    public boolean quit() {
-        return true;
-    }
 }
