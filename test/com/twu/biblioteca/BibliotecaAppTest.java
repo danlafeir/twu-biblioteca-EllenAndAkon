@@ -44,7 +44,7 @@ public class BibliotecaAppTest {
 
     @Test
     public void shouldDisplayMenuOnStart(){
-        when(menu.isStillAlive()).thenReturn(true);
+        when(menu.isStillAlive()).thenReturn(true).thenReturn(false);
         bibliotecaApp.start();
 
         verify(menu).displayMenu();

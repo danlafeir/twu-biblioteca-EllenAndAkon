@@ -31,14 +31,17 @@ public class Menu {
         printStream.println("- Checkout [book title]");
         printStream.println("- Return [book title]");
         printStream.println("Enter your selection");
+    }
+
+    public String getUserInput() {
+        String userSelection = " ";
         try {
-            String userSelection = reader.readLine();
-            selectOption(userSelection);
+            userSelection = reader.readLine();
         }
         catch (IOException e) {
             printStream.println(e.getMessage());
         }
-
+        return userSelection;
     }
 
     public void selectOption(String selection) {
@@ -67,7 +70,6 @@ public class Menu {
         }
         else{
             printStream.println("That's not a valid option");
-            displayMenu();
         }
     }
 }

@@ -36,6 +36,7 @@ public class BibliotecaApp {
         printStream.println("Welcome to Biblioteca!");
         while (menu.isStillAlive()) {
             menu.displayMenu();
+            menu.selectOption(menu.getUserInput());
         }
         quit();
 
