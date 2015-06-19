@@ -28,6 +28,7 @@ public class Menu {
 
     public void displayMenu() {
         printStream.println("MAIN MENU");
+        printStream.println("- Login");
         printStream.println("- List Books");
         printStream.println("- List Movies");
         printStream.println("- Quit");
@@ -58,6 +59,7 @@ public class Menu {
         else{
             printStream.println("You need to be logged in to perform this option");
         }
+
         if (selection.contains("list books")) {
             biblioteca.listBooks();
         }
@@ -68,6 +70,18 @@ public class Menu {
         }
         else if (selection.contains("return book")) {
             returnABook(selection);
+        }
+        else if (selection.contains("login")) {
+            printStream.println("Enter library number");
+            String libraryNumber = getUserInput();
+            printStream.println("Enter password");
+            String password = getUserInput();
+            if (user.login(libraryNumber, password)) {
+                printStream.println("Logged in successfully");
+            }
+            else {
+                printStream.println("Invalid credentials");
+            }
         }
         else if (selection.contains("quit")) {
             stillAlive = false;

@@ -135,4 +135,35 @@ public class MenuTest {
         menu.selectOption("checkout book Akon's thesis");
         verify(printStream).println("You need to be logged in to perform this option");
     }
+
+    @Test
+    public void shouldIncludeLoginInMenuOption(){
+        menu.displayMenu();
+        verify(printStream).println(contains("Login"));
+    }
+
+    @Test
+    public void shouldPromptForLoginCredentialsWhenLoginSelected(){
+        when(user.isLoggedIn()).thenReturn(false);
+        menu.selectOption("Login");
+        verify(printStream).println(contains("Enter library number"));
+        verify(printStream).println(contains("Enter password"));
+    }
+
+    @Test
+    public void shouldLetUserKnowWhenCredentialsAreWrong() throws IOException {
+        when(user.isLoggedIn()).thenReturn(false);
+        when(reader.readLine()).thenReturn("foo", "bar");
+        menu.selectOption("login");
+        verify(printStream).println("Invalid credentials");
+    }
+
+    @Test
+    public void shouldLetUserKnowWhenLoginIsSuccessful() throws IOException {
+        when(user.isLoggedIn()).thenReturn(false);
+        when(reader.readLine()).thenReturn("123-4567", "foobar");
+        when(user.login("123-4567", "foobar")).thenReturn(true);
+        menu.selectOption("login");
+        verify(printStream).println("Logged in successfully");
+    }
 }
