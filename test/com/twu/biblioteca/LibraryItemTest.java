@@ -12,12 +12,12 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-public class BookTest {
+public class LibraryItemTest {
 
     private String title;
     private String author;
     private String yearPublished;
-    private Book book;
+    private LibraryItem book;
 
     @Before
     public void setUp() {

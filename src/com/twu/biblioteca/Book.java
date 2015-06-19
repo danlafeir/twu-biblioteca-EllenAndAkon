@@ -5,40 +5,10 @@ import java.io.PrintStream;
 /**
  * Created by egalperi on 6/16/15.
  */
-public class Book {
-    private String title;
-    private String author;
-    private String yearPublished;
-    private boolean checkedOut;
+public class Book extends LibraryItem {
 
     public Book(String title, String author, String yearPublished) {
-        this.title = title;
-        this.author = author;
-        this.yearPublished = yearPublished;
-        checkedOut = false;
+        super(title, author, yearPublished);
     }
 
-    public String title() {
-        return title;
-    }
-
-    public void printDetails(PrintStream printStream) {
-        printStream.format("%20s %20s %20s\n", title, author, yearPublished);
-    }
-
-    public boolean isCheckedOut() {
-        return checkedOut;
-    }
-
-    public void checkOut() {
-        checkedOut = true;
-    }
-
-    public boolean checkIn() {
-        if (isCheckedOut()) {
-            checkedOut = false;
-            return true;
-        }
-        return false;
-    }
 }
