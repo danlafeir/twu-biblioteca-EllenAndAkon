@@ -24,7 +24,11 @@ public class BibliotecaApp {
         books.add(new Book("Harry Potter", "JK Rowling", "2000"));
         books.add(new Book("Twilight", "Stephanie Myers", "2000"));
         books.add(new Book("Native Son", "Richard Wright", "2000"));
-        Biblioteca biblioteca = new Biblioteca(printStream, books);
+        ArrayList<Movie> movies = new ArrayList<Movie>();
+        movies.add(new Movie("Harry Potter", "JK Rowling", "2000", "86"));
+        movies.add(new Movie("Twilight", "Stephanie Myers", "2000", "5"));
+        movies.add(new Movie("Seventh Son", "Richard Wright", "2000", "76"));
+        Biblioteca biblioteca = new Biblioteca(printStream, books, movies);
 
         Menu menu = new Menu(System.out, biblioteca, reader);
         BibliotecaApp bibliotecaApp = new BibliotecaApp(printStream, menu);

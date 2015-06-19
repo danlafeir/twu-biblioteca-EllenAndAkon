@@ -27,6 +27,7 @@ public class Menu {
     public void displayMenu() {
         printStream.println("MAIN MENU");
         printStream.println("- List Books");
+        printStream.println("- List Movies");
         printStream.println("- Quit");
         printStream.println("- Checkout [book title]");
         printStream.println("- Return [book title]");
@@ -48,6 +49,17 @@ public class Menu {
         selection = selection.toLowerCase();
         if (selection.contains("list books")) {
             biblioteca.listBooks();
+        }
+        else if (selection.contains("checkout")){
+            boolean checkout = biblioteca.checkout(selection.replace("checkout","").trim());
+            if(checkout) {
+                printStream.println("Success! Enjoy your book.");
+            }else{
+                printStream.println("Could not check out book with that title.");
+            }
+        }
+        else if (selection.contains("list movies")){
+            biblioteca.listMovies();
         }
         else if (selection.contains("checkout")){
             boolean checkout = biblioteca.checkout(selection.replace("checkout","").trim());

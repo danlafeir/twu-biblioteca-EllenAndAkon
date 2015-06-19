@@ -7,7 +7,7 @@ import java.io.PrintStream;
  */
 public class Movie extends LibraryItem {
 
-    private int rating;
+    private String rating;
 
     public Movie(String title, String author, String yearPublished, String rating) {
         super(title, author, yearPublished);

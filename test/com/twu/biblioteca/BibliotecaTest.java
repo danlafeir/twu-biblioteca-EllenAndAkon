@@ -1,14 +1,10 @@
 package com.twu.biblioteca;
 
-import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintStream;
-import java.nio.Buffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +20,7 @@ public class BibliotecaTest {
     private PrintStream printStream;
     private Biblioteca biblioteca;
     private List<Book> books;
+    private List<Movie> movies;
     private Book book1, book2, book3;
     private BufferedReader reader;
 
@@ -31,8 +28,9 @@ public class BibliotecaTest {
     public void setUp() {
         printStream = mock(PrintStream.class);
         books = new ArrayList<Book>();
+        movies = new ArrayList<Movie>();
         reader = mock(BufferedReader.class);
-        biblioteca = new Biblioteca(printStream, books);
+        biblioteca = new Biblioteca(printStream, books, movies);
         book1 = mock(Book.class);
         when(book1.title()).thenReturn("Book 1");
         book2 = mock(Book.class);
@@ -47,6 +45,12 @@ public class BibliotecaTest {
     public void shouldPrintNothingWhenThereAreNoBooks() {
         biblioteca.listBooks();
 
+        verify(printStream).println("");
+    }
+
+    @Test
+    public void shouldPrintNothingWhenThereAreNoMovies() {
+        biblioteca.listMovies();
         verify(printStream).println("");
     }
 

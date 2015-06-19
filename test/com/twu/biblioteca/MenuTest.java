@@ -21,10 +21,10 @@ public class MenuTest {
     private BufferedReader reader;
     private PrintStream printStream;
     private Biblioteca biblioteca;
-    private List<Book> books;
+    private List<LibraryItem> items;
     private Menu menu;
     private BibliotecaApp bibliotecaApp;
-    private String bookTitle;
+    private String itemTitle;
 
     @Before
     public void setUp() throws IOException{
@@ -32,9 +32,9 @@ public class MenuTest {
         printStream = mock(PrintStream.class);
         biblioteca = mock(Biblioteca.class);
         menu = new Menu(printStream, biblioteca, reader);
-        when(reader.readLine()).thenReturn("list books");
+        when(reader.readLine()).thenReturn("list items");
         bibliotecaApp = mock(BibliotecaApp.class);
-        bookTitle = "Akon's Thesis";
+        itemTitle = "Akon's Thesis";
     }
 
     @Test
@@ -69,27 +69,27 @@ public class MenuTest {
 
     @Test
     public void shouldReturnBookWithGivenTitle(){
-        menu.selectOption("return " + bookTitle);
-        verify(biblioteca).returnBook(bookTitle.toLowerCase());
+        menu.selectOption("return " + itemTitle);
+        verify(biblioteca).returnBook(itemTitle.toLowerCase());
     }
 
     @Test
     public void shouldCheckoutBookWithGivenTitle(){
-        menu.selectOption("checKout " + bookTitle);
-        verify(biblioteca).checkout(bookTitle.toLowerCase());
+        menu.selectOption("checKout " + itemTitle);
+        verify(biblioteca).checkout(itemTitle.toLowerCase());
     }
 
     @Test
     public void shouldLetUserKnowWhenCheckoutFails(){
-        when(biblioteca.checkout(bookTitle)).thenReturn(false);
-        menu.selectOption("checKout " + bookTitle);
+        when(biblioteca.checkout(itemTitle)).thenReturn(false);
+        menu.selectOption("checKout " + itemTitle);
         verify(printStream).println("Could not check out book with that title.");
     }
 
     @Test
     public void shouldLetUserKnowWhenCheckoutIsSuccessful(){
-        when(biblioteca.checkout(bookTitle.toLowerCase())).thenReturn(true);
-        menu.selectOption("checKout " + bookTitle);
+        when(biblioteca.checkout(itemTitle.toLowerCase())).thenReturn(true);
+        menu.selectOption("checKout " + itemTitle);
         verify(printStream).println(contains("Success"));
     }
 
@@ -101,15 +101,15 @@ public class MenuTest {
 
     @Test
     public void shouldLetUserKnowReturnisSuccessful(){
-        when(biblioteca.returnBook(bookTitle.toLowerCase())).thenReturn(true);
-        menu.selectOption("return " + bookTitle);
+        when(biblioteca.returnBook(itemTitle.toLowerCase())).thenReturn(true);
+        menu.selectOption("return " + itemTitle);
         verify(printStream).println(contains("success"));
     }
 
     @Test
     public void shouldLetUserKnowReturnisUnsuccessful(){
-        when(biblioteca.returnBook(bookTitle.toLowerCase())).thenReturn(false);
-        menu.selectOption("return " + bookTitle);
+        when(biblioteca.returnBook(itemTitle.toLowerCase())).thenReturn(false);
+        menu.selectOption("return " + itemTitle);
         verify(printStream).println(contains("not return"));
     }
 }

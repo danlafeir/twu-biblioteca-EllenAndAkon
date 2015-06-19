@@ -12,10 +12,12 @@ public class Biblioteca {
 
     private PrintStream printStream;
     private List<Book> books;
+    private List<Movie> movies;
 
-    public Biblioteca(PrintStream printStream, List<Book> books) {
+    public Biblioteca(PrintStream printStream, List<Book> books, List<Movie> movies) {
         this.printStream = printStream;
         this.books = books;
+        this.movies = movies;
     }
 
     public void listBooks() {
@@ -56,5 +58,14 @@ public class Biblioteca {
             }
         }
         return false;
+    }
+
+    public void listMovies() {
+        for (Movie movie : movies) {
+            if (!movie.isCheckedOut()) {
+                movie.printDetails(printStream);
+            }
+        }
+        printStream.println("");
     }
 }
