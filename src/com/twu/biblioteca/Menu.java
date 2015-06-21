@@ -10,15 +10,15 @@ import java.io.PrintStream;
 public class Menu {
     private Biblioteca biblioteca;
     private BufferedReader reader;
-    private User user;
+    private Librarian user;
     private PrintStream printStream;
     private boolean stillAlive;
 
-    public Menu(PrintStream printStream, Biblioteca biblioteca, BufferedReader reader, User user){
+    public Menu(PrintStream printStream, Biblioteca biblioteca, BufferedReader reader, Librarian librarian){
         this.printStream = printStream;
         this.biblioteca = biblioteca;
         this.reader = reader;
-        this.user = user;
+        this.user = librarian;
         this.stillAlive = true;
     }
 
@@ -28,7 +28,9 @@ public class Menu {
 
     public void displayMenu() {
         printStream.println("MAIN MENU");
-        printStream.println("- Login");
+        if(!user.isLoggedIn()){
+            printStream.println("- Login");
+        }
         printStream.println("- List Books");
         printStream.println("- List Movies");
         printStream.println("- Quit");
@@ -58,36 +60,35 @@ public class Menu {
         }
         else{
             printStream.println("You need to be logged in to perform this option");
-        }
-
-        if (selection.contains("list books")) {
-            biblioteca.listBooks();
-        }
-        else if (selection.contains("list movies")){
-            biblioteca.listMovies();
-        } else if (selection.contains("checkout movie")) {
-            checkoutMovie(selection);
-        }
-        else if (selection.contains("return book")) {
-            returnABook(selection);
-        }
-        else if (selection.contains("login")) {
-            printStream.println("Enter library number");
-            String libraryNumber = getUserInput();
-            printStream.println("Enter password");
-            String password = getUserInput();
-            if (user.login(libraryNumber, password)) {
-                printStream.println("Logged in successfully");
+            if (selection.contains("list books")) {
+                biblioteca.listBooks();
             }
-            else {
-                printStream.println("Invalid credentials");
+            else if (selection.contains("list movies")){
+                biblioteca.listMovies();
+            } else if (selection.contains("checkout movie")) {
+                checkoutMovie(selection);
             }
-        }
-        else if (selection.contains("quit")) {
-            stillAlive = false;
-        }
-        else{
-            printStream.println("That's not a valid option");
+            else if (selection.contains("return book")) {
+                returnABook(selection);
+            }
+            else if (selection.contains("login")) {
+                printStream.println("Enter library number");
+                String libraryNumber = getUserInput();
+                printStream.println("Enter password");
+                String password = getUserInput();
+                if (user.login(libraryNumber, password)) {
+                    printStream.println("Logged in successfully");
+                }
+                else {
+                    printStream.println("Invalid credentials");
+                }
+            }
+            else if (selection.contains("quit")) {
+                stillAlive = false;
+            }
+            else{
+                printStream.println("That's not a valid option");
+            }
         }
     }
 
