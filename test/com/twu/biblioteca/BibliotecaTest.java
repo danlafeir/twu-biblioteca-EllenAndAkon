@@ -79,7 +79,7 @@ public class BibliotecaTest {
         Book book5 = new Book("Conversations on String Theory", "Raymond", "1991");
         books.add(book4);
         books.add(book5);
-        biblioteca.checkout(book4.title());
+        biblioteca.checkoutBook(book4.title());
         biblioteca.listBooks();
 
         verify(printStream, never()).format(anyString(), eq("Akon's thesis"), eq("Akon"), eq("4000"));
@@ -90,14 +90,14 @@ public class BibliotecaTest {
         Book book4 = new Book("Akon's thesis", "Akon", "4000");
         books.add(book4);
         book4.checkOut();
-        assertFalse(biblioteca.checkout(book4.title()));
+        assertFalse(biblioteca.checkoutBook(book4.title()));
     }
 
     @Test
     public void shouldReturnTrueIfBookIsNotAlreadyCheckedOut() {
         Book book4 = new Book("Akon's thesis", "Akon", "4000");
         books.add(book4);
-        assertTrue(biblioteca.checkout(book4.title()));
+        assertTrue(biblioteca.checkoutBook(book4.title()));
     }
 
     @Test

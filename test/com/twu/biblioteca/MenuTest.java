@@ -22,15 +22,15 @@ public class MenuTest {
     private Menu menu;
     private BibliotecaApp bibliotecaApp;
     private String itemTitle;
-    private Librarian librarian;
+    private User user;
 
     @Before
     public void setUp() throws IOException{
         reader = mock(BufferedReader.class);
         printStream = mock(PrintStream.class);
         biblioteca = mock(Biblioteca.class);
-        librarian = mock(Librarian.class);
-        menu = new Menu(printStream, biblioteca, reader, librarian);
+        user = mock(User.class);
+        menu = new Menu(printStream, biblioteca, reader, user);
         when(reader.readLine()).thenReturn("list items");
         bibliotecaApp = mock(BibliotecaApp.class);
         itemTitle = "Akon's Thesis";
@@ -80,9 +80,9 @@ public class MenuTest {
 
     @Test
     public void shouldCheckoutBookWithGivenTitle(){
-        when(librarian.isLoggedIn()).thenReturn(true);
+        when(user.isLoggedIn()).thenReturn(true);
         menu.selectOption("checKout book" + itemTitle);
-        verify(biblioteca).checkout(itemTitle.toLowerCase());
+        verify(biblioteca).checkoutBook(itemTitle.toLowerCase());
     }
 
     @Test
@@ -93,16 +93,16 @@ public class MenuTest {
 
     @Test
     public void shouldLetUserKnowWhenCheckoutFails(){
-        when(biblioteca.checkout(itemTitle)).thenReturn(false);
-        when(librarian.isLoggedIn()).thenReturn(true);
+        when(biblioteca.checkoutBook(itemTitle)).thenReturn(false);
+        when(user.isLoggedIn()).thenReturn(true);
         menu.selectOption("checKout book" + itemTitle);
         verify(printStream).println("Could not check out book with that title.");
     }
 
     @Test
     public void shouldLetUserKnowWhenCheckoutIsSuccessful(){
-        when(biblioteca.checkout(itemTitle.toLowerCase())).thenReturn(true);
-        when(librarian.isLoggedIn()).thenReturn(true);
+        when(biblioteca.checkoutBook(itemTitle.toLowerCase())).thenReturn(true);
+        when(user.isLoggedIn()).thenReturn(true);
         menu.selectOption("checKout book " + itemTitle);
         verify(printStream).println(contains("Success"));
     }
@@ -123,14 +123,14 @@ public class MenuTest {
 
     @Test
     public void shouldCheckIfYouAreLoggedInWhenCheckingOutBooks(){
-        menu.selectOption("checkout book Akon's thesis");
-        verify(librarian).isLoggedIn();
+        menu.selectOption("checkoutBook book Akon's thesis");
+        verify(user).isLoggedIn();
     }
 
     @Test
     public void shouldPrintMessageWhenUserIsNotLoggedIn(){
-        when(librarian.isLoggedIn()).thenReturn(false);
-        menu.selectOption("checkout book Akon's thesis");
+        when(user.isLoggedIn()).thenReturn(false);
+        menu.selectOption("checkoutBook book Akon's thesis");
         verify(printStream).println("You need to be logged in to perform this option");
     }
 
@@ -142,7 +142,7 @@ public class MenuTest {
 
     @Test
     public void shouldPromptForLoginCredentialsWhenLoginSelected(){
-        when(librarian.isLoggedIn()).thenReturn(false);
+        when(user.isLoggedIn()).thenReturn(false);
         menu.selectOption("Login");
         verify(printStream).println(contains("Enter library number"));
         verify(printStream).println(contains("Enter password"));
@@ -150,7 +150,7 @@ public class MenuTest {
 
     @Test
     public void shouldLetUserKnowWhenCredentialsAreWrong() throws IOException {
-        when(librarian.isLoggedIn()).thenReturn(false);
+        when(user.isLoggedIn()).thenReturn(false);
         when(reader.readLine()).thenReturn("foo", "bar");
         menu.selectOption("login");
         verify(printStream).println("Invalid credentials");
@@ -158,24 +158,16 @@ public class MenuTest {
 
     @Test
     public void shouldLetUserKnowWhenLoginIsSuccessful() throws IOException {
-        when(librarian.isLoggedIn()).thenReturn(false);
+        when(user.isLoggedIn()).thenReturn(false);
         when(reader.readLine()).thenReturn("123-4567", "foobar");
-        when(librarian.login("123-4567", "foobar")).thenReturn(true);
+        when(user.login("123-4567", "foobar")).thenReturn(true);
         menu.selectOption("login");
         verify(printStream).println("Logged in successfully");
     }
 
-    @Test
-    public void shouldNotIncludedLoginAsMenuOptionWhenLoggedIn(){
-        when(librarian.isLoggedIn()).thenReturn(true);
-        menu.displayMenu();
-        verify(printStream, never()).println("- Login");
-    }
 
     @Test
-    public void shouldNotDisplayInvalidOptionWhenCheckingOutABook(){
-        when(librarian.isLoggedIn()).thenReturn(true);
-        menu.selectOption("checKout book" + itemTitle);
-        verify(printStream, never()).println("That's not a valid option");
+    public void shouldPutCommandsInCommandMapWhenSomething(){
+
     }
 }

@@ -8,22 +8,22 @@ import static org.hamcrest.core.Is.is;
 /**
  * Created by angoh on 6/19/15.
  */
-public class LibrarianTest {
+public class UserTest {
 
     @Test
     public void shouldReturnTrueWhenCredentialsMatchHardCodedValues(){
-        Librarian librarian = new Librarian();
+        User user = new User();
 
-        boolean valueToCheck = librarian.login("123-4567","foobar");
+        boolean valueToCheck = user.login("123-4567","foobar");
 
         assertThat(valueToCheck,is(true));
     }
 
     @Test
-    public void shouldReturnFalseWhenCredentialsDontMatchHardCodedValues(){
-        Librarian librarian = new Librarian();
+    public void shouldReturnFalseWhenCredentialsDoNotMatchHardCodedValues(){
+        User user = new User();
 
-        boolean valueToCheck = librarian.login("23-4567","foobar");
+        boolean valueToCheck = user.login("23-4567","foobar");
 
         assertThat(valueToCheck,is(false));
     }

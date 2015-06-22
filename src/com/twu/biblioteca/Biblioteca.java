@@ -29,7 +29,7 @@ public class Biblioteca {
         printStream.println("");
     }
 
-    public boolean checkout(String bookTitle) {
+    public boolean checkoutBook(String bookTitle) {
         for (Book book : books) {
             if (book.title().equalsIgnoreCase(bookTitle)) {
                 if (book.isCheckedOut()) {
